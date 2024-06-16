@@ -39,7 +39,7 @@
                 VerticalContentAlignment="Center"
                 Background="SteelBlue"
                 BorderBrush="DarkSlateBlue"
-                Click="Button_Click"
+                Click="SelectInitialFamilyFolder"
                 Content="Select"
                 FontSize="16"
                 Foreground="White" />
@@ -68,7 +68,6 @@
                 TextWrapping="Wrap" />
 
             <Button
-                Name="buttonSaveIni"
                 Grid.Row="2"
                 Width="120"
                 Height="30"
@@ -78,7 +77,7 @@
                 VerticalContentAlignment="Center"
                 Background="SteelBlue"
                 BorderBrush="DarkSlateBlue"
-                Click="buttonSaveIni_Click"
+                Click="SelectSettingsPath"
                 Content="Select"
                 FontSize="16"
                 Foreground="White" />
@@ -97,27 +96,25 @@
                 <ColumnDefinition Width="3*" />
             </Grid.ColumnDefinitions>
             <Button
-                Name="ButtonOk"
                 Grid.Column="1"
                 Width="120"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Background="SteelBlue"
                 BorderBrush="DarkSlateBlue"
-                Click="ButtonOk_Click"
+                Click="SaveSettings"
                 Content="OK"
                 FontSize="16"
                 Foreground="White" />
 
             <Button
-                Name="ButtonCancel"
                 Grid.Column="3"
                 Width="120"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Background="SteelBlue"
                 BorderBrush="DarkSlateBlue"
-                Click="ButtonCancel_Click"
+                Click="Cancel"
                 Content="Cancel"
                 FontSize="16"
                 Foreground="White" />

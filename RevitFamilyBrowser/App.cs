@@ -2,6 +2,8 @@ using Autodesk.Revit.UI;
 using System.Reflection;
 using zRevitFamilyBrowser.Properties;
 using System.IO;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Autodesk.Revit.DB.Events;
 using Autodesk.Revit.UI.Events;
 using zRevitFamilyBrowser.Commands;
@@ -9,6 +11,11 @@ using zRevitFamilyBrowser.Definitions;
 using zRevitFamilyBrowser.Events;
 using zRevitFamilyBrowser.Models;
 using zRevitFamilyBrowser.Windows;
+using System.Drawing;
+using zRevitFamilyBrowser.Extensions;
+using Autodesk.Revit.DB;
+using System.Drawing.Imaging;
+using Settings = zRevitFamilyBrowser.Properties.Settings;
 
 namespace zRevitFamilyBrowser
 {
@@ -39,25 +46,24 @@ namespace zRevitFamilyBrowser
 
             var showPanelButton = new PushButtonData("ShowPanel", "Показать панель", assemblyPath, typeof(ShowDockablePanel).FullName)
             {
-                LargeImage = Tools.GetImage(Resources.IconShowPanel.GetHbitmap())
+                LargeImage =  Resources.IconShowPanel.GetImage()
             };
 
             var openFolderButton = new PushButtonData("OpenFolder", "Открыть папку", assemblyPath, typeof(FolderSelect).FullName)
             {
-                LargeImage = Tools.GetImage(Resources.OpenFolder.GetHbitmap())
+                LargeImage = Resources.OpenFolder.GetImage()
             };
 
             var spaceButton = new PushButtonData("Space", "Grid Elements\nInstall", assemblyPath, typeof(Space).FullName)
             {
-                LargeImage = Tools.GetImage(Resources.Grid.GetHbitmap()),
+                LargeImage = Resources.Grid.GetImage(),
                 ToolTip = "1. Select item form browser.\n2. Pick room in project\n3. Adjust item position and quantity."
             };
 
             var showSettingsButton = new PushButtonData("Settings", "Настройки", assemblyPath, typeof(ShowSettings).FullName)
             {
-                LargeImage = Tools.GetImage(Resources.settings.GetHbitmap())
+                LargeImage = Resources.settings.GetImage()
             };
-
 
             var ribbonPanel = application.CreateRibbonPanel("Familien Browser", "Familien Browser");
 
@@ -106,14 +112,44 @@ namespace zRevitFamilyBrowser
 
         private void OnViewActivated(object sender, ViewActivatedEventArgs e)
         {
-            Tools.CreateImages(e.Document);
+            CreateImages(e.Document);
             Tools.CollectFamilyData(e.Document);
         }
 
         private void OnDocOpened(object sender, DocumentOpenedEventArgs e)
         {
-            Tools.CreateImages(e.Document);
+            CreateImages(e.Document);
             Tools.CollectFamilyData(e.Document);
+        }
+
+        /// <summary>
+        ///     Создание изображений для всех элементов во временной папке
+        /// </summary>
+        public void CreateImages(Document document)
+        {
+            var temporaryImageFolder = Path.GetTempPath() + "FamilyBrowser\\";
+
+            if (Directory.Exists(temporaryImageFolder) == false)
+                Directory.CreateDirectory(temporaryImageFolder);
+
+            var familyInstances = new FilteredElementCollector(document).OfClass(typeof(FamilyInstance));
+            var defaultImageSize = new System.Drawing.Size(200, 200);
+
+            foreach (var familyInstance in familyInstances)
+            {
+                var elementId = familyInstance.GetTypeId();
+                var element = document.GetElement(elementId) as ElementType;
+                var filename = Path.Combine(temporaryImageFolder, $"{element.Name}.bmp");
+
+                if (File.Exists(filename))
+                    continue;
+
+                var image = element.GetPreviewImage(defaultImageSize);
+
+                using var file = new FileStream(filename, FileMode.Create, FileAccess.Write);
+
+                image.Save(file, ImageFormat.Png);
+            }
         }
     }
 }

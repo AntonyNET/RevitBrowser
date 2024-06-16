@@ -7,6 +7,7 @@ using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using Ookii.Dialogs.Wpf;
+using zRevitFamilyBrowser.Extensions;
 using zRevitFamilyBrowser.Models;
 using TaskDialog = Autodesk.Revit.UI.TaskDialog;
 
@@ -142,7 +143,7 @@ namespace zRevitFamilyBrowser.Commands
                             System.Drawing.Size imgSize = new System.Drawing.Size(200, 200);
                             Bitmap image = symbol.GetPreviewImage(imgSize);
                             BitmapEncoder encoder = new BmpBitmapEncoder();
-                            encoder.Frames.Add(BitmapFrame.Create(Tools.ConvertBitmapToBitmapSource(image)));
+                            encoder.Frames.Add(BitmapFrame.Create(image.GetImage()));
                             FileStream file = new FileStream(filename, FileMode.Create, FileAccess.Write);
 
                             encoder.Save(file);

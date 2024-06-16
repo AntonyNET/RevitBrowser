@@ -69,7 +69,6 @@ namespace zRevitFamilyBrowser.Events
                 uidoc.PostRequestForElementTypePlacement(symbol);
             }
             Tools.CollectFamilyData(doc);
-            //Tools.CreateImages(doc);
         }
 
         private Element FindFamilyByName(Document doc, Type targetType, string familyPath)

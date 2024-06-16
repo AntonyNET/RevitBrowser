@@ -20,7 +20,7 @@ namespace zRevitFamilyBrowser.Windows
 
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void SelectInitialFamilyFolder(object sender, RoutedEventArgs e)
         {
             VistaFolderBrowserDialog ofd = new VistaFolderBrowserDialog();
             if (ofd.ShowDialog() == true)
@@ -30,7 +30,7 @@ namespace zRevitFamilyBrowser.Windows
             }
         }
 
-        private void buttonSaveIni_Click(object sender, RoutedEventArgs e)
+        private void SelectSettingsPath(object sender, RoutedEventArgs e)
         {
             VistaFolderBrowserDialog ofd = new VistaFolderBrowserDialog();
             if (ofd.ShowDialog() == true)
@@ -40,12 +40,12 @@ namespace zRevitFamilyBrowser.Windows
             }
         }
 
-        private void ButtonOk_Click(object sender, RoutedEventArgs e)
+        private void SaveSettings(object sender, RoutedEventArgs e)
         {
             string pathIni = TextBoxSettings.Text;
-          //  string fileName = "FamilyBrowser.ini";
             var parentWindow = Window.GetWindow(this);
             bool valid = true;
+
 
             try
             {
@@ -79,7 +79,7 @@ namespace zRevitFamilyBrowser.Windows
             parentWindow?.Close();
         }
 
-        private void ButtonCancel_Click(object sender, RoutedEventArgs e)
+        private void Cancel(object sender, RoutedEventArgs e)
         {
             var parentWindow = Window.GetWindow(this);
             parentWindow?.Close();
