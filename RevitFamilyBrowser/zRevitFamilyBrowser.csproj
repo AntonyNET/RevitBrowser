@@ -33,6 +33,7 @@
     <StartAction>Program</StartAction>
     <StartProgram>$(ProgramW6432)\Autodesk\Revit Copernicus\Revit.exe</StartProgram>
     <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -44,6 +45,7 @@
     <StartAction>Program</StartAction>
     <StartProgram>$(ProgramW6432)\Autodesk\Revit Copernicus\Revit.exe</StartProgram>
     <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyName>zRevitFamilyBrowser</AssemblyName>
@@ -56,10 +58,10 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="RevitAPI">
-      <HintPath>C:\Program Files\Autodesk\Revit 2021\RevitAPI.dll</HintPath>
+      <HintPath>Resources\RevitAPI.dll</HintPath>
     </Reference>
     <Reference Include="RevitAPIUI">
-      <HintPath>C:\Program Files\Autodesk\Revit 2021\RevitAPIUI.dll</HintPath>
+      <HintPath>Resources\RevitAPIUI.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -70,8 +72,10 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Pattern Elements Install\Dimension.cs" />
-    <Compile Include="Pattern Elements Install\ElementPreview.cs" />
+    <Compile Include="Definitions\PanelIds.cs" />
+    <Compile Include="Events\GridInstallEvent.cs" />
+    <Compile Include="Models\Dimension.cs" />
+    <Compile Include="Models\ElementPreview.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -84,68 +88,65 @@
     </Compile>
     <Compile Include="App.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Browser\FolderSelect.cs" />
-    <Compile Include="Pattern Elements Install\GridInstallEvent.cs" />
-    <Compile Include="AppSettings\Settings.cs" />
-    <Compile Include="Browser\SingleInstallEvent.cs" />
-    <Compile Include="Browser\ShowPanel.cs" />
-    <Compile Include="Pattern Elements Install\Space.cs" />
-    <Compile Include="AppSettings\SettingsControl.xaml.cs">
+    <Compile Include="Commands\FolderSelect.cs" />
+    <Compile Include="Commands\ShowSettings.cs" />
+    <Compile Include="Events\SingleInstallEvent.cs" />
+    <Compile Include="Commands\ShowDockablePanel.cs" />
+    <Compile Include="Commands\Space.cs" />
+    <Compile Include="Windows\SettingsControl.xaml.cs">
       <DependentUpon>SettingsControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pattern Elements Install\ToolsWPF.cs" />
-    <Compile Include="Browser\DockPanel.xaml.cs">
+    <Compile Include="Models\ToolsWPF.cs" />
+    <Compile Include="Windows\DockPanel.xaml.cs">
       <DependentUpon>DockPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Browser\FamilyData.cs" />
-    <Compile Include="Pattern Elements Install\GridSetup.xaml.cs">
+    <Compile Include="Models\FamilyData.cs" />
+    <Compile Include="Windows\GridSetup.xaml.cs">
       <DependentUpon>GridSetup.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pattern Elements Install\RoomDimensions.cs" />
-    <Compile Include="Tools.cs" />
+    <Compile Include="Models\RoomDimensions.cs" />
+    <Compile Include="Models\Tools.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="bin\Debug\Ookii.Dialogs.Wpf.dll" />
     <None Include="Resources\Ookii.Dialogs.Wpf.dll" />
     <None Include="Resources\Settings.png" />
-    <Content Include="images\Grid.png" />
     <None Include="Resources\Grid.png" />
     <Content Include="zRevitFamilyBrowser.addin">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="AppSettings\SettingsControl.xaml">
+    <Page Include="Windows\SettingsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Browser\DockPanel.xaml">
+    <Page Include="Windows\DockPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pattern Elements Install\GridSetup.xaml">
+    <Page Include="Windows\GridSetup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="images\IconShowPanel.png" />
-    <Content Include="images\RevitLogo.png" />
-    <None Include="images\OpenFolder.png" />
+    <Content Include="Resources\IconShowPanel.png" />
+    <Content Include="Resources\RevitLogo.png" />
+    <None Include="Resources\OpenFolder.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

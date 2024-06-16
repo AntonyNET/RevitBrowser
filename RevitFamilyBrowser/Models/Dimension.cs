@@ -1,15 +1,15 @@
 ﻿using System;
-using zRevitFamilyBrowser.WPF_Classes;
-using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Shapes;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Shapes;
+using zRevitFamilyBrowser.Windows;
 using Brushes = System.Windows.Media.Brushes;
 using Point = System.Drawing.Point;
 
-namespace zRevitFamilyBrowser.Pattern_Elements_Install
+namespace zRevitFamilyBrowser.Models
 {
     public class Dimension
     {

@@ -1,16 +1,17 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Windows;
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Architecture;
 using Autodesk.Revit.UI;
-using zRevitFamilyBrowser.WPF_Classes;
+using zRevitFamilyBrowser.Events;
+using zRevitFamilyBrowser.Models;
+using zRevitFamilyBrowser.Windows;
 using Brushes = System.Windows.Media.Brushes;
 using OperationCanceledException = Autodesk.Revit.Exceptions.OperationCanceledException;
 using Point = System.Drawing.Point;
 
-namespace zRevitFamilyBrowser.Revit_Classes
+namespace zRevitFamilyBrowser.Commands
 {
     [Transaction(TransactionMode.Manual)]
     public class Space : IExternalCommand

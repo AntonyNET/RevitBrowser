@@ -2,17 +2,16 @@
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-using Autodesk.Revit.UI.Events;
-using Autodesk.Revit.ApplicationServices;
+using zRevitFamilyBrowser.Definitions;
 
-namespace zRevitFamilyBrowser.Revit_Classes
+namespace zRevitFamilyBrowser.Commands
 {
     [Transaction(TransactionMode.Manual)]
-    class ShowPanel : IExternalCommand
+    class ShowDockablePanel : IExternalCommand
     {
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
-            DockablePaneId dpid = new DockablePaneId(new Guid("FA0C04E6-F9E7-413A-9D33-CFE32622E7B8"));
+            DockablePaneId dpid = new DockablePaneId(PanelIds.FamilyBrowserPanelId);
             DockablePane dp = commandData.Application.GetDockablePane(dpid);
             dp.Show();
             return Result.Succeeded;

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
+using zRevitFamilyBrowser.Models;
 
-namespace zRevitFamilyBrowser.Revit_Classes
+namespace zRevitFamilyBrowser.Events
 {
     public class SingleInstallEvent : IExternalEventHandler
     {

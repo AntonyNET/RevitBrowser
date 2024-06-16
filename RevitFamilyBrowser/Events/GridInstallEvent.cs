@@ -1,17 +1,14 @@
-﻿using Autodesk.Revit.Attributes;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Structure;
 using Autodesk.Revit.UI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using Application = Autodesk.Revit.ApplicationServices.Application;
 using ArgumentException = Autodesk.Revit.Exceptions.ArgumentException;
 
-namespace zRevitFamilyBrowser.Revit_Classes
+namespace zRevitFamilyBrowser.Events
 {
     [Transaction(TransactionMode.Manual)]
     public class GridInstallEvent : IExternalEventHandler

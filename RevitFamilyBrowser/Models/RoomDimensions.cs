@@ -1,18 +1,9 @@
-﻿using Autodesk.Revit.DB;
-using Autodesk.Revit.DB.Architecture;
-using Autodesk.Revit.UI;
-using Autodesk.Revit.UI.Selection;
-using zRevitFamilyBrowser.Revit_Classes;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Media;
+using Autodesk.Revit.DB;
+using Autodesk.Revit.DB.Architecture;
 
-namespace zRevitFamilyBrowser.WPF_Classes
+namespace zRevitFamilyBrowser.Models
 {
 
     //This class transform Revit coordinates into WPF canvas coordinates

@@ -1,7 +1,4 @@
-﻿using Autodesk.Revit.UI;
-using zRevitFamilyBrowser.Pattern_Elements_Install;
-using zRevitFamilyBrowser.Revit_Classes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -10,13 +7,15 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Autodesk.Revit.DB.Architecture;
+using Autodesk.Revit.UI;
+using zRevitFamilyBrowser.Events;
+using zRevitFamilyBrowser.Models;
 using Brushes = System.Windows.Media.Brushes;
 
-namespace zRevitFamilyBrowser.WPF_Classes
+namespace zRevitFamilyBrowser.Windows
 {
     /// Class Dispalys Room perimeter and allow interactions with its elements
     /// Selecting wall on canvas buld prpendiculars and detects intersection point to instal Revit elemnts

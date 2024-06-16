@@ -1,20 +1,16 @@
-﻿using Autodesk.Revit.UI;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Autodesk.Revit.DB;
-using Autodesk.Revit.Attributes;
-using System.IO;
-using zRevitFamilyBrowser.WPF_Classes;
-using System.Windows.Media.Imaging;
-using System.Windows;
 using System.Drawing;
-using Autodesk.Revit.DB.Events;
-using System.Diagnostics;
+using System.IO;
+using System.Windows.Media.Imaging;
+using Autodesk.Revit.Attributes;
+using Autodesk.Revit.DB;
+using Autodesk.Revit.UI;
 using Ookii.Dialogs.Wpf;
+using zRevitFamilyBrowser.Models;
 using TaskDialog = Autodesk.Revit.UI.TaskDialog;
 
-namespace zRevitFamilyBrowser.Revit_Classes
+namespace zRevitFamilyBrowser.Commands
 {
     [Transaction(TransactionMode.Manual)]
     public class FolderSelect : IExternalCommand

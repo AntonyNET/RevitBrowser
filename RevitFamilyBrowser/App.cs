@@ -1,92 +1,100 @@
-#region Namespaces
-using System;
 using Autodesk.Revit.UI;
 using System.Reflection;
-using zRevitFamilyBrowser.WPF_Classes;
-using zRevitFamilyBrowser.Revit_Classes;
 using zRevitFamilyBrowser.Properties;
 using System.IO;
 using Autodesk.Revit.DB.Events;
-using Autodesk.Revit.DB;
-using System.Drawing;
-using System.Windows.Media.Imaging;
-using System.Windows;
-using System.Collections.Generic;
 using Autodesk.Revit.UI.Events;
-using System.Linq;
-
-#endregion
+using zRevitFamilyBrowser.Commands;
+using zRevitFamilyBrowser.Definitions;
+using zRevitFamilyBrowser.Events;
+using zRevitFamilyBrowser.Models;
+using zRevitFamilyBrowser.Windows;
 
 namespace zRevitFamilyBrowser
 {
     class App : IExternalApplication
     {
-        public App()
+        public Result OnStartup(UIControlledApplication application)
         {
-            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
-        }
+            CreateRibbonPanel(application);
+            CreateDockPanel(application);
+            LoadRootFolderSettings();
 
-        public Result OnStartup(UIControlledApplication a)
-        {
-            a.CreateRibbonTab("Familien Browser"); //Familien Browser Families Browser
-            RibbonPanel G17 = a.CreateRibbonPanel("Familien Browser", "Familien Browser");
-            string path = Assembly.GetExecutingAssembly().Location;
-
-            SingleInstallEvent handler = new SingleInstallEvent();
-            ExternalEvent exEvent = ExternalEvent.Create(handler);
-
-            DockPanel dockPanel = new DockPanel(exEvent, handler);
-            DockablePaneId dpID = new DockablePaneId(new Guid("FA0C04E6-F9E7-413A-9D33-CFE32622E7B8"));
-            a.RegisterDockablePane(dpID, "Familien Browser", (IDockablePaneProvider)dockPanel);
-
-            PushButtonData btnShow = new PushButtonData("ShowPanel", "Panel\nanzeigen", path, "zRevitFamilyBrowser.Revit_Classes.ShowPanel"); //Panel anzeigen ShowPanel
-            btnShow.LargeImage = Tools.GetImage(Resources.IconShowPanel.GetHbitmap());
-            RibbonItem ri1 = G17.AddItem(btnShow);
-
-            PushButtonData btnFolder = new PushButtonData("OpenFolder", "Verzeichnis\n�ffnen", path, "zRevitFamilyBrowser.Revit_Classes.FolderSelect");   //Verzeichnis  �ffnen      
-            btnFolder.LargeImage = Tools.GetImage(Resources.OpenFolder.GetHbitmap());
-            RibbonItem ri2 = G17.AddItem(btnFolder);
-
-            PushButtonData btnSpace = new PushButtonData("Space", "Grid Elements\nInstall", path, "zRevitFamilyBrowser.Revit_Classes.Space");
-            btnSpace.LargeImage = Tools.GetImage(Resources.Grid.GetHbitmap());
-            btnSpace.ToolTip =
-                "1. Select item form browser.\n2. Pick room in project\n3. Adjust item position and quantity.";
-            RibbonItem ri3 = G17.AddItem(btnSpace);
-
-            G17.AddSeparator();
-            PushButtonData btnSettings = new PushButtonData("Settings", "Settings", path, "zRevitFamilyBrowser.Revit_Classes.Settings");
-            btnSettings.LargeImage = Tools.GetImage(Resources.settings.GetHbitmap());
-            RibbonItem ri4 = G17.AddItem(btnSettings);
-
-            // a.ControlledApplication.DocumentChanged += OnDocChanged;
-            a.ControlledApplication.DocumentOpened += OnDocOpened;
-            a.ViewActivated += OnViewActivated;
-
-            if (File.Exists(Properties.Settings.Default.SettingPath))
-            {
-                Properties.Settings.Default.RootFolder = File.ReadAllText(Properties.Settings.Default.SettingPath);
-                Properties.Settings.Default.Save();
-            }
+            application.ControlledApplication.DocumentOpened += OnDocOpened;
+            application.ViewActivated += OnViewActivated;
 
             return Result.Succeeded;
         }
 
-        System.Reflection.Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        /// <summary>
+        /// Создание таба в основном меню
+        /// https://help.autodesk.com/view/RVT/2019/ENU/?guid=Revit_API_Revit_API_Developers_Guide_Introduction_Add_In_Integration_Ribbon_Panels_and_Controls_html
+        /// </summary>
+        private void CreateRibbonPanel(UIControlledApplication application)
         {
-            string dllName = args.Name.Contains(',') ? args.Name.Substring(0, args.Name.IndexOf(',')) : args.Name.Replace(".dll", "");
-            dllName = dllName.Replace(".", "_");
-            if (dllName.EndsWith("_resources")) return null;
-            System.Resources.ResourceManager rm = new System.Resources.ResourceManager(GetType().Namespace + ".Properties.Resources", System.Reflection.Assembly.GetExecutingAssembly());
-            byte[] bytes = (byte[])rm.GetObject(dllName);
-            return System.Reflection.Assembly.Load(bytes);
+            var tabName = "Familien Browser";
+            var assemblyPath = Assembly.GetExecutingAssembly().Location;
+
+            application.CreateRibbonTab(tabName);
+
+            var showPanelButton = new PushButtonData("ShowPanel", "Показать панель", assemblyPath, typeof(ShowDockablePanel).FullName)
+            {
+                LargeImage = Tools.GetImage(Resources.IconShowPanel.GetHbitmap())
+            };
+
+            var openFolderButton = new PushButtonData("OpenFolder", "Открыть папку", assemblyPath, typeof(FolderSelect).FullName)
+            {
+                LargeImage = Tools.GetImage(Resources.OpenFolder.GetHbitmap())
+            };
+
+            var spaceButton = new PushButtonData("Space", "Grid Elements\nInstall", assemblyPath, typeof(Space).FullName)
+            {
+                LargeImage = Tools.GetImage(Resources.Grid.GetHbitmap()),
+                ToolTip = "1. Select item form browser.\n2. Pick room in project\n3. Adjust item position and quantity."
+            };
+
+            var showSettingsButton = new PushButtonData("Settings", "Настройки", assemblyPath, typeof(ShowSettings).FullName)
+            {
+                LargeImage = Tools.GetImage(Resources.settings.GetHbitmap())
+            };
+
+
+            var ribbonPanel = application.CreateRibbonPanel("Familien Browser", "Familien Browser");
+
+            ribbonPanel.AddItem(showPanelButton);
+            ribbonPanel.AddItem(openFolderButton);
+            ribbonPanel.AddItem(spaceButton);
+            ribbonPanel.AddSeparator();
+            ribbonPanel.AddItem(showSettingsButton);
+        }
+
+        /// <summary>
+        /// Создание высящей панели инструментов
+        /// https://help.autodesk.com/view/RVT/2019/ENU/?guid=Revit_API_Revit_API_Developers_Guide_Advanced_Topics_Dockable_Dialog_Panes_html
+        /// </summary>
+        private void CreateDockPanel(UIControlledApplication application)
+        {
+            var singleInstallEvent = new SingleInstallEvent();
+            var externalEvent = ExternalEvent.Create(singleInstallEvent);
+
+            var dockPanel = new DockPanel(externalEvent, singleInstallEvent);
+            var dockablePaneId = new DockablePaneId(PanelIds.FamilyBrowserPanelId);
+            application.RegisterDockablePane(dockablePaneId, "Familien Browser", (IDockablePaneProvider)dockPanel);
+        }
+
+        private void LoadRootFolderSettings()
+        {
+            if (File.Exists(Settings.Default.SettingPath) == false)
+                return;
+            
+            Settings.Default.RootFolder = File.ReadAllText(Settings.Default.SettingPath);
+            Settings.Default.Save();
         }
 
         public Result OnShutdown(UIControlledApplication a)
         {
             a.ControlledApplication.DocumentOpened -= OnDocOpened;
-           // a.ControlledApplication.DocumentChanged -= OnDocChanged;
             a.ViewActivated -= OnViewActivated;
-
 
             Properties.Settings.Default.FamilyPath = string.Empty;
             Properties.Settings.Default.FamilyName = string.Empty;
@@ -106,18 +114,6 @@ namespace zRevitFamilyBrowser
         {
             Tools.CreateImages(e.Document);
             Tools.CollectFamilyData(e.Document);
-        }
-
-        //private void OnDocChanged(object sender, DocumentChangedEventArgs e)
-        //{
-        //    Tools.CreateImages(e.GetDocument());
-        //    Tools.CollectFamilyData(e.GetDocument());
-        //}
-
-        private void OnDocSaved(object sender, DocumentSavedEventArgs e)
-        {
-            //Tools.CreateImages(e.Document);
-            //Tools.CollectFamilyData(e.Document);
         }
     }
 }

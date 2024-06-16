@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace zRevitFamilyBrowser.WPF_Classes
+namespace zRevitFamilyBrowser.Models
 {
     public class FamilyData
     {

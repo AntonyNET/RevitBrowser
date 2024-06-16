@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Drawing;
+using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using Autodesk.Revit.UI;
-using zRevitFamilyBrowser.Revit_Classes;
-using System.IO;
-using System.Windows.Data;
-using System.ComponentModel;
-using System.Collections.ObjectModel;
-using System.Reflection;
-using System.Drawing;
-using System.Linq;
+using zRevitFamilyBrowser.Events;
+using zRevitFamilyBrowser.Models;
 
-namespace zRevitFamilyBrowser.WPF_Classes
+namespace zRevitFamilyBrowser.Windows
 {
     public partial class DockPanel : UserControl, IDockablePaneProvider
     {
