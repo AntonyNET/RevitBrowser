@@ -33,7 +33,8 @@
     <StartAction>Program</StartAction>
     <StartProgram>$(ProgramW6432)\Autodesk\Revit Copernicus\Revit.exe</StartProgram>
     <Prefer32Bit>false</Prefer32Bit>
-    <LangVersion>8</LangVersion>
+    <LangVersion>9</LangVersion>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -45,7 +46,8 @@
     <StartAction>Program</StartAction>
     <StartProgram>$(ProgramW6432)\Autodesk\Revit Copernicus\Revit.exe</StartProgram>
     <Prefer32Bit>false</Prefer32Bit>
-    <LangVersion>8</LangVersion>
+    <LangVersion>9</LangVersion>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyName>zRevitFamilyBrowser</AssemblyName>
@@ -73,10 +75,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Definitions\PanelIds.cs" />
-    <Compile Include="Events\GridInstallEvent.cs" />
     <Compile Include="Extensions\BitmapExtensions.cs" />
-    <Compile Include="Models\Dimension.cs" />
-    <Compile Include="Models\ElementPreview.cs" />
+    <Compile Include="Models\FamilySymbolDto.cs" />
+    <Compile Include="Services\FamilyService.cs" />
+    <Compile Include="Models\FamilyDto.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -89,24 +91,17 @@
     </Compile>
     <Compile Include="App.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Commands\FolderSelect.cs" />
     <Compile Include="Commands\ShowSettings.cs" />
     <Compile Include="Events\SingleInstallEvent.cs" />
     <Compile Include="Commands\ShowDockablePanel.cs" />
-    <Compile Include="Commands\Space.cs" />
+    <Compile Include="Services\FileService.cs" />
+    <Compile Include="ViewModels\DockPanelViewModel.cs" />
     <Compile Include="Windows\SettingsControl.xaml.cs">
       <DependentUpon>SettingsControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\ToolsWPF.cs" />
     <Compile Include="Windows\DockPanel.xaml.cs">
       <DependentUpon>DockPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\FamilyData.cs" />
-    <Compile Include="Windows\GridSetup.xaml.cs">
-      <DependentUpon>GridSetup.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Models\RoomDimensions.cs" />
-    <Compile Include="Models\Tools.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">
@@ -120,6 +115,7 @@
     <None Include="Resources\Ookii.Dialogs.Wpf.dll" />
     <None Include="Resources\Settings.png" />
     <None Include="Resources\Grid.png" />
+    <None Include="Resources\RevitLogo 50x50.png" />
     <Content Include="zRevitFamilyBrowser.addin">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -133,14 +129,12 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\GridSetup.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\IconShowPanel.png" />
-    <Content Include="Resources\RevitLogo.png" />
+    <Content Include="Resources\RevitLogo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Resources\OpenFolder.png" />
   </ItemGroup>
   <ItemGroup>

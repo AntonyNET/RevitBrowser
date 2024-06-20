@@ -2,20 +2,14 @@ using Autodesk.Revit.UI;
 using System.Reflection;
 using zRevitFamilyBrowser.Properties;
 using System.IO;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using Autodesk.Revit.DB.Events;
 using Autodesk.Revit.UI.Events;
 using zRevitFamilyBrowser.Commands;
 using zRevitFamilyBrowser.Definitions;
-using zRevitFamilyBrowser.Events;
-using zRevitFamilyBrowser.Models;
 using zRevitFamilyBrowser.Windows;
-using System.Drawing;
 using zRevitFamilyBrowser.Extensions;
-using Autodesk.Revit.DB;
-using System.Drawing.Imaging;
 using Settings = zRevitFamilyBrowser.Properties.Settings;
+using zRevitFamilyBrowser.Services;
 
 namespace zRevitFamilyBrowser
 {
@@ -49,17 +43,6 @@ namespace zRevitFamilyBrowser
                 LargeImage =  Resources.IconShowPanel.GetImage()
             };
 
-            var openFolderButton = new PushButtonData("OpenFolder", "Открыть папку", assemblyPath, typeof(FolderSelect).FullName)
-            {
-                LargeImage = Resources.OpenFolder.GetImage()
-            };
-
-            var spaceButton = new PushButtonData("Space", "Grid Elements\nInstall", assemblyPath, typeof(Space).FullName)
-            {
-                LargeImage = Resources.Grid.GetImage(),
-                ToolTip = "1. Select item form browser.\n2. Pick room in project\n3. Adjust item position and quantity."
-            };
-
             var showSettingsButton = new PushButtonData("Settings", "Настройки", assemblyPath, typeof(ShowSettings).FullName)
             {
                 LargeImage = Resources.settings.GetImage()
@@ -68,8 +51,6 @@ namespace zRevitFamilyBrowser
             var ribbonPanel = application.CreateRibbonPanel("Familien Browser", "Familien Browser");
 
             ribbonPanel.AddItem(showPanelButton);
-            ribbonPanel.AddItem(openFolderButton);
-            ribbonPanel.AddItem(spaceButton);
             ribbonPanel.AddSeparator();
             ribbonPanel.AddItem(showSettingsButton);
         }
@@ -80,10 +61,7 @@ namespace zRevitFamilyBrowser
         /// </summary>
         private void CreateDockPanel(UIControlledApplication application)
         {
-            var singleInstallEvent = new SingleInstallEvent();
-            var externalEvent = ExternalEvent.Create(singleInstallEvent);
-
-            var dockPanel = new DockPanel(externalEvent, singleInstallEvent);
+            var dockPanel = new DockPanel();
             var dockablePaneId = new DockablePaneId(PanelIds.FamilyBrowserPanelId);
             application.RegisterDockablePane(dockablePaneId, "Familien Browser", (IDockablePaneProvider)dockPanel);
         }
@@ -101,55 +79,18 @@ namespace zRevitFamilyBrowser
         {
             a.ControlledApplication.DocumentOpened -= OnDocOpened;
             a.ViewActivated -= OnViewActivated;
-
-            Properties.Settings.Default.FamilyPath = string.Empty;
-            Properties.Settings.Default.FamilyName = string.Empty;
-            Properties.Settings.Default.FamilySymbol = string.Empty;
-            Properties.Settings.Default.Save();
           
             return Result.Succeeded;
         }
 
         private void OnViewActivated(object sender, ViewActivatedEventArgs e)
         {
-            CreateImages(e.Document);
-            Tools.CollectFamilyData(e.Document);
+            FamilyService.CollectFamilyData(e.Document);
         }
 
         private void OnDocOpened(object sender, DocumentOpenedEventArgs e)
         {
-            CreateImages(e.Document);
-            Tools.CollectFamilyData(e.Document);
-        }
-
-        /// <summary>
-        ///     Создание изображений для всех элементов во временной папке
-        /// </summary>
-        public void CreateImages(Document document)
-        {
-            var temporaryImageFolder = Path.GetTempPath() + "FamilyBrowser\\";
-
-            if (Directory.Exists(temporaryImageFolder) == false)
-                Directory.CreateDirectory(temporaryImageFolder);
-
-            var familyInstances = new FilteredElementCollector(document).OfClass(typeof(FamilyInstance));
-            var defaultImageSize = new System.Drawing.Size(200, 200);
-
-            foreach (var familyInstance in familyInstances)
-            {
-                var elementId = familyInstance.GetTypeId();
-                var element = document.GetElement(elementId) as ElementType;
-                var filename = Path.Combine(temporaryImageFolder, $"{element.Name}.bmp");
-
-                if (File.Exists(filename))
-                    continue;
-
-                var image = element.GetPreviewImage(defaultImageSize);
-
-                using var file = new FileStream(filename, FileMode.Create, FileAccess.Write);
-
-                image.Save(file, ImageFormat.Png);
-            }
+            FamilyService.CollectFamilyData(e.Document);
         }
     }
 }
