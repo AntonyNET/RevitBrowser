@@ -21,12 +21,12 @@ namespace zRevitFamilyBrowser.Windows
         private ExternalEvent _externalEvent;
         private SingleInstallEvent _singleInstallEvent;
 
-        private string temp = string.Empty;
-        private int ImageListLength = 0;
+        private string temp = string.Empty; //удалить
+        private int ImageListLength = 0; //удалить
 
-        private string tempFamilyPath = string.Empty;
-        private string tempFamilySymbol = string.Empty;
-        private string tempFamilyName = string.Empty;
+        private string tempFamilyPath = string.Empty; //удалить
+        private string tempFamilySymbol = string.Empty; //удалить
+        private string tempFamilyName = string.Empty; //удалить
 
         public DockPanel()
         {

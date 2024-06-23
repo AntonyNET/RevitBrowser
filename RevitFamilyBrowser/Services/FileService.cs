@@ -17,7 +17,7 @@ namespace zRevitFamilyBrowser.Services
             if (_temporaryImageFolder is not null)
                 return _temporaryImageFolder;
 
-            _temporaryImageFolder = Path.Combine(Path.GetTempPath(), "FamilyBrowser");
+            _temporaryImageFolder = Path.Combine(Path.GetTempPath(), "FamilyBrowser"); // папка temp?
 
             if (Directory.Exists(_temporaryImageFolder) == false)
                 Directory.CreateDirectory(_temporaryImageFolder);

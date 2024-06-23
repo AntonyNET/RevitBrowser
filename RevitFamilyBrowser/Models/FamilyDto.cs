@@ -8,7 +8,7 @@ namespace zRevitFamilyBrowser.Models
     public class FamilyDto
     {
         /// <summary>
-        ///     Название семейства
+        /// Название семейства
         /// </summary>
         public string Name { get; set; }
 

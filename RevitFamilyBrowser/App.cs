@@ -15,6 +15,8 @@ namespace zRevitFamilyBrowser
 {
     class App : IExternalApplication
     {
+        // когда айэнум, когда аррей, когда []? 
+
         public Result OnStartup(UIControlledApplication application)
         {
             CreateRibbonPanel(application);
@@ -33,14 +35,15 @@ namespace zRevitFamilyBrowser
         /// </summary>
         private void CreateRibbonPanel(UIControlledApplication application)
         {
-            var tabName = "Familien Browser";
+            var tabName = "Family Browser";
             var assemblyPath = Assembly.GetExecutingAssembly().Location;
+
 
             application.CreateRibbonTab(tabName);
 
             var showPanelButton = new PushButtonData("ShowPanel", "Показать панель", assemblyPath, typeof(ShowDockablePanel).FullName)
             {
-                LargeImage =  Resources.IconShowPanel.GetImage()
+                LargeImage = Resources.IconShowPanel.GetImage() // как картинки попадают в ресурсы?
             };
 
             var showSettingsButton = new PushButtonData("Settings", "Настройки", assemblyPath, typeof(ShowSettings).FullName)
@@ -48,7 +51,7 @@ namespace zRevitFamilyBrowser
                 LargeImage = Resources.settings.GetImage()
             };
 
-            var ribbonPanel = application.CreateRibbonPanel("Familien Browser", "Familien Browser");
+            var ribbonPanel = application.CreateRibbonPanel("Family Browser", "Family Browser");
 
             ribbonPanel.AddItem(showPanelButton);
             ribbonPanel.AddSeparator();
@@ -63,7 +66,7 @@ namespace zRevitFamilyBrowser
         {
             var dockPanel = new DockPanel();
             var dockablePaneId = new DockablePaneId(PanelIds.FamilyBrowserPanelId);
-            application.RegisterDockablePane(dockablePaneId, "Familien Browser", (IDockablePaneProvider)dockPanel);
+            application.RegisterDockablePane(dockablePaneId, "Family Browser", (IDockablePaneProvider)dockPanel);
         }
 
         private void LoadRootFolderSettings()

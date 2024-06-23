@@ -15,26 +15,39 @@
     </UserControl.DataContext>
 
     <TabControl Margin="0,0,0,0">
-        <TabItem Header="New Elements">
-            <Grid Background="WhiteSmoke">
-
-                <Label
-                        x:Name="label"
-                        Width="60"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Content="Category: " />
-                <Label
-                        x:Name="label_CategoryName"
-                        Width="220"
-                        Margin="80,0,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Content="" />
-
+        <TabItem Header="Избранное">
+            <Grid x:Name="extraBtns"
+                  Background="WhiteSmoke"
+                  Height="20"
+                  VerticalAlignment="Top"
+                  ShowGridLines="False">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0"
+                        Background="Transparent">
+                    <Button.Content>
+                        <Viewbox Margin="0 2">
+                            <Path Fill="Gray" 
+                      VerticalAlignment="Center" HorizontalAlignment="Center" 
+                      Data="M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z"/>
+                        </Viewbox>
+                    </Button.Content>
+                </Button>
+                <Button Grid.Column="1"
+                        Background="Transparent">
+                    <Button.Content>
+                        <Viewbox Margin="0 2">
+                            <Path Fill="Gray" 
+                             VerticalAlignment="Center" HorizontalAlignment="Center" 
+                             Data="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z"/>
+                        </Viewbox>
+                    </Button.Content>
+                </Button>
             </Grid>
         </TabItem>
-
 
         <TabItem Header="Элементы в проекте">
             <ListView ItemsSource="{Binding Families}">
@@ -51,13 +64,27 @@
                                     </StackPanel>
                                 </Border>
                             </Expander.Header>
-                            <ListView ItemsSource="{Binding Symbols}">
+                            <ListView ItemsSource="{Binding Symbols}" HorizontalContentAlignment="Stretch">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Source="{Binding ImagePath}"/>
-                                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center"></TextBlock>
-                                        </StackPanel>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="0.1*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Image Source="{Binding ImagePath}" Grid.Column="0" HorizontalAlignment="Left"/>
+                                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Grid.Column="1" HorizontalAlignment="Left"/>
+                                            <Button Grid.Column="2" HorizontalAlignment="Center">
+                                                <Button.Content>
+                                                    <Viewbox Margin="0 2">
+                                                        <Path Fill="Gray" 
+                                                              VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                                              Data="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/>
+                                                    </Viewbox>
+                                                </Button.Content>
+                                            </Button>
+                                        </Grid>
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
                             </ListView>
@@ -67,6 +94,5 @@
             </ListView>
 
         </TabItem>
-
     </TabControl>
 </UserControl>

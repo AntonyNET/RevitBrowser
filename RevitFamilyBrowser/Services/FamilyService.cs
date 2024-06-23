@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Windows.Controls;
 using zRevitFamilyBrowser.Models;
 using Document = Autodesk.Revit.DB.Document;
 
@@ -12,7 +13,7 @@ namespace zRevitFamilyBrowser.Services
     public static class FamilyService
     {
         public static List<FamilyDto> Families;
-        private static readonly Size DefaultFamilySymbolImageSize;
+        private static readonly Size DefaultFamilySymbolImageSize; // нужно начинать название с _?
         private static readonly string DefaultFamilySymbolImagePath;
         public static FamilySymbolDto? SelectedFamilySymbol { get; set; }
 
@@ -21,44 +22,44 @@ namespace zRevitFamilyBrowser.Services
             Families = new List<FamilyDto>();
 
             DefaultFamilySymbolImageSize = new Size(50, 50);
-            DefaultFamilySymbolImagePath = FileService.GetFullPath($"{nameof(Properties.Resources.RevitLogo)}.bmp");
+            DefaultFamilySymbolImagePath = FileService.GetFullPath($"{nameof(Properties.Resources.RevitLogo)}.bmp"); // всегда используется полный путь?
 
-            Properties.Resources.RevitLogo.Save(DefaultFamilySymbolImagePath);
+            Properties.Resources.RevitLogo.Save(DefaultFamilySymbolImagePath); // зачем?
         }
 
         /// <summary>
-        ///     Создание изображений для всех элементов во временной папке
+        /// Создание изображений для всех элементов во временной папке
         /// </summary>
         public static void CollectFamilyData(Document document)
         {
             Families.Clear();
 
-            var worksets = new FilteredWorksetCollector(document)
-                .OfKind(WorksetKind.FamilyWorkset)
-                .ToWorksets();
-
-            if (worksets.Count == 0)
+            // фильтр для мультикатегории
+            ElementMulticategoryFilter mcFilter = new ElementMulticategoryFilter(new List<BuiltInCategory>
             {
-                var families = new FilteredElementCollector(document).OfClass(typeof(Family)).Cast<Family>();
+                BuiltInCategory.OST_MechanicalEquipment,
+                BuiltInCategory.OST_GenericModel
+            });
 
-                Families.AddRange(GetFamiliesElements(families));
-            }
-            else
+            var col = new FilteredElementCollector(document)
+                .WherePasses(mcFilter)
+                .WhereElementIsElementType()
+                .ToList();
+
+            col.RemoveAt(0);
+
+            var fSymb = col.Cast<FamilySymbol>()
+                .Select(symb => symb.Family.Id)
+                .Distinct()
+                .ToList();
+
+            List<Family> families = new List<Family>();
+            foreach (var item in fSymb)
             {
-                foreach (var workset in worksets)
-                {
-                    if (workset.IsEditable)
-                    {
-                        var elementWorksetFilter = new ElementWorksetFilter(workset.Id, false);
-                        var families = new FilteredElementCollector(document)
-                            .OfClass(typeof(Family))
-                            .WherePasses(elementWorksetFilter)
-                            .Cast<Family>();
-
-                        Families.AddRange(GetFamiliesElements(families));
-                    }
-                }
+                families.Add((Family)document.GetElement(item));
             }
+
+            Families.AddRange(GetFamiliesElements(families));
         }
 
         private static IEnumerable<FamilyDto> GetFamiliesElements(IEnumerable<Family> families)
@@ -67,6 +68,7 @@ namespace zRevitFamilyBrowser.Services
 
             foreach (var family in families)
             {
+                // удалить?
                 if (family.Name.Contains("Standart") ||
                     family.Name.Contains("Mullion") ||
                     family.Name.Contains("Tag"))
@@ -84,8 +86,8 @@ namespace zRevitFamilyBrowser.Services
                     })
                     .ToArray();
 
-                if (familySymbolDtos.Any() == false)
-                    continue;
+                if (familySymbolDtos.Any() == false) // зачем?
+                    continue; 
 
                 var familyDto = new FamilyDto
                 {
@@ -104,7 +106,7 @@ namespace zRevitFamilyBrowser.Services
             var imageFilePath = FileService.GetFullPath($"{familySymbol.Name}.bmp");
 
             if (File.Exists(imageFilePath))
-                return imageFilePath;
+                return imageFilePath; //?
 
             var image = familySymbol.GetPreviewImage(DefaultFamilySymbolImageSize);
 
@@ -112,7 +114,7 @@ namespace zRevitFamilyBrowser.Services
             if (image is null)
                 return DefaultFamilySymbolImagePath;
 
-            using var file = new FileStream(imageFilePath, FileMode.Create, FileAccess.Write);
+            using var file = new FileStream(imageFilePath, FileMode.Create, FileAccess.Write); // для чего using?
 
             image.Save(file, ImageFormat.Bmp);
 

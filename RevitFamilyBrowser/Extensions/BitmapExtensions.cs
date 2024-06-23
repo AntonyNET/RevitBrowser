@@ -7,7 +7,7 @@ namespace zRevitFamilyBrowser.Extensions
 {
     public static class BitmapExtensions
     {
-        public static BitmapSource GetImage(this Bitmap bitmap)
+        public static BitmapSource GetImage(this Bitmap bitmap) // что значит this в этом контексте?
         {
             BitmapSource bmSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
                 bitmap.GetHbitmap(),
