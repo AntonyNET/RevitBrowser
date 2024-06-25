@@ -5,6 +5,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using zRevitFamilyBrowser.Models;
+using zRevitFamilyBrowser.ViewModels;
 using Document = Autodesk.Revit.DB.Document;
 
 namespace zRevitFamilyBrowser.Services
@@ -61,12 +62,12 @@ namespace zRevitFamilyBrowser.Services
                     .Select(familySymbolId => family.Document.GetElement(familySymbolId))
                     .Cast<FamilySymbol>()
                     .Where(familySymbol => familySymbol is not null)
-                    .Select(familySymbol => new FamilySymbolDto
+                    .Select(familySymbol => new FamilySymbolViewModel(new FamilySymbolDto
                     {
                         Name = familySymbol.Name,
                         ImagePath = CreateImageForFamilySymbol(familySymbol),
                         FamilySymbol = familySymbol
-                    })
+                    }))
                     .ToArray();
 
                 //Если семейство не содержит никаких символов, то пропускает это семейство, так как отображать будет нечего и не зачем загрязнять UI

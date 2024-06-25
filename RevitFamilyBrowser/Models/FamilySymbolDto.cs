@@ -18,5 +18,10 @@ namespace zRevitFamilyBrowser.Models
         ///     Ссылка на объект семейства
         /// </summary>
         public FamilySymbol FamilySymbol { get; set; }
+
+        /// <summary>
+        ///     Добавлен ли символ в избранное
+        /// </summary>
+        public bool IsFavorite { get; set; }
     }
 }

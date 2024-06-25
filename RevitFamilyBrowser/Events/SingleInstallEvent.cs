@@ -1,14 +1,28 @@
-﻿using Autodesk.Revit.DB;
+﻿using System;
+using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 
 namespace zRevitFamilyBrowser.Events
 {
     public class SingleInstallEvent : IExternalEventHandler
     {
+        private readonly FamilySymbol _familySymbol;
+
+        public SingleInstallEvent(FamilySymbol familySymbol)
+        {
+            _familySymbol = familySymbol;
+        }
+
         public void Execute(UIApplication uiapp)
         {
-            FamilySymbol historySymbol = null; //TODO
-            uiapp.ActiveUIDocument.PostRequestForElementTypePlacement(historySymbol);
+            try
+            {
+                uiapp.ActiveUIDocument.PostRequestForElementTypePlacement(_familySymbol);
+            }
+            catch (Exception e)
+            {
+                TaskDialog.Show("Ошибка", e.Message);
+            }
         }
 
         public string GetName()

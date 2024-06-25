@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using zRevitFamilyBrowser.ViewModels;
 
 namespace zRevitFamilyBrowser.Models
 {
@@ -12,11 +13,11 @@ namespace zRevitFamilyBrowser.Models
         /// </summary>
         public string Name { get; set; }
 
-        public string? ImagePath => Symbols.FirstOrDefault(x => string.IsNullOrEmpty(x.ImagePath) == false)?.ImagePath;
+        public string? ImagePath => Symbols.FirstOrDefault(x => string.IsNullOrEmpty(x.FamilySymbolDto.ImagePath) == false)?.FamilySymbolDto.ImagePath;
 
         /// <summary>
         ///     Объекты семейства
         /// </summary>
-        public FamilySymbolDto[] Symbols { get; set; }
+        public FamilySymbolViewModel[] Symbols { get; set; }
     }
 }
