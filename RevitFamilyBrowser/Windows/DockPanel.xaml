@@ -17,37 +17,25 @@
 
     <TabControl Margin="0,0,0,0">
         <TabItem Header="Избранное">
-            <Grid x:Name="extraBtns"
-                  Background="WhiteSmoke"
-                  Height="20"
-                  VerticalAlignment="Top"
-                  ShowGridLines="False">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="20"/>
-                    <ColumnDefinition Width="20"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <Button Grid.Column="0"
-                        Background="Transparent">
-                    <Button.Content>
-                        <Viewbox Margin="0 2">
-                            <Path Fill="Gray" 
-                      VerticalAlignment="Center" HorizontalAlignment="Center" 
-                      Data="M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z"/>
-                        </Viewbox>
-                    </Button.Content>
-                </Button>
-                <Button Grid.Column="1"
-                        Background="Transparent">
-                    <Button.Content>
-                        <Viewbox Margin="0 2">
-                            <Path Fill="Gray" 
-                             VerticalAlignment="Center" HorizontalAlignment="Center" 
-                             Data="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z"/>
-                        </Viewbox>
-                    </Button.Content>
-                </Button>
-            </Grid>
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button Background="Transparent" Padding="0 0 3 3">
+                            <Path Fill="Gray" Data="M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z"/>
+                    </Button>
+
+                    <Button Background="Transparent" Padding="0 0 3 3">
+                            <Path Fill="Gray" Data="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z"/>
+                    </Button>
+                </StackPanel>
+
+                <ListView ItemsSource="{Binding FavoriteSymbols}"  HorizontalContentAlignment="Stretch" Height="500">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <windows:FamilySymbolControl/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
         </TabItem>
 
         <TabItem Header="Элементы в проекте">

@@ -4,6 +4,8 @@ using System.Windows.Input;
 using zRevitFamilyBrowser.Models;
 using Autodesk.Revit.UI;
 using zRevitFamilyBrowser.Events;
+using CommunityToolkit.Mvvm.Messaging;
+using zRevitFamilyBrowser.Messages;
 
 namespace zRevitFamilyBrowser.ViewModels
 {
@@ -33,6 +35,8 @@ namespace zRevitFamilyBrowser.ViewModels
             FamilySymbolDto.IsFavorite = false;
             OnPropertyChanged(nameof(FamilySymbolDto));
             OnPropertyChanged(nameof(CanAddToFavorite));
+
+            WeakReferenceMessenger.Default.Send(new FamilySymbolRemovedFromFavorite(this));
         }
 
         private void AddToFavorite()
@@ -40,6 +44,7 @@ namespace zRevitFamilyBrowser.ViewModels
             FamilySymbolDto.IsFavorite = true;
             OnPropertyChanged(nameof(FamilySymbolDto));
             OnPropertyChanged(nameof(CanAddToFavorite));
+            WeakReferenceMessenger.Default.Send(new FamilySymbolAddedToFavorite(this));
         }
 
         private void InstallSymbol()

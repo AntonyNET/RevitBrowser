@@ -2,7 +2,6 @@
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using Ookii.Dialogs.Wpf;
 
 namespace zRevitFamilyBrowser.Windows
 {
@@ -22,22 +21,22 @@ namespace zRevitFamilyBrowser.Windows
 
         private void SelectInitialFamilyFolder(object sender, RoutedEventArgs e)
         {
-            VistaFolderBrowserDialog ofd = new VistaFolderBrowserDialog();
-            if (ofd.ShowDialog() == true)
-            {
-                TextBoxFamily.Text = ofd.SelectedPath;
-                DefaultFamilyPath = ofd.SelectedPath;
-            }
+            //VistaFolderBrowserDialog ofd = new VistaFolderBrowserDialog();
+            //if (ofd.ShowDialog() == true)
+            //{
+            //    TextBoxFamily.Text = ofd.SelectedPath;
+            //    DefaultFamilyPath = ofd.SelectedPath;
+            //}
         }
 
         private void SelectSettingsPath(object sender, RoutedEventArgs e)
         {
-            VistaFolderBrowserDialog ofd = new VistaFolderBrowserDialog();
-            if (ofd.ShowDialog() == true)
-            {
-                string fileName = @"\FamilyBrowser.ini";
-                TextBoxSettings.Text = ofd.SelectedPath + fileName;
-            }
+            //VistaFolderBrowserDialog ofd = new VistaFolderBrowserDialog();
+            //if (ofd.ShowDialog() == true)
+            //{
+            //    string fileName = @"\FamilyBrowser.ini";
+            //    TextBoxSettings.Text = ofd.SelectedPath + fileName;
+            //}
         }
 
         private void SaveSettings(object sender, RoutedEventArgs e)
