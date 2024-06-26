@@ -32,26 +32,32 @@ namespace zRevitFamilyBrowser.Services
         public static void CollectFamilyData(Document document)
         {
             Families.Clear();
-
-            // фильтр для мультикатегории
-            var mcFilter = new ElementMulticategoryFilter(new List<BuiltInCategory>
+            
+            var allowedFamilyCategoryIds = new[]
             {
-                BuiltInCategory.OST_MechanicalEquipment,
-                BuiltInCategory.OST_GenericModel
-            });
-
+                Category.GetCategory(document, BuiltInCategory.OST_MechanicalEquipment).Id,
+                Category.GetCategory(document, BuiltInCategory.OST_GenericModel).Id
+            };
+         
             var families = new FilteredElementCollector(document)
-                .OfClass(typeof(FamilySymbol))
-                .WherePasses(mcFilter)
-                .Cast<FamilySymbol>()
-                .Select(x => x.Family)
-                .Distinct()
-                .Where(family => family.Name.Contains("Standart") == false
-                                 && family.Name.Contains("Mullion") == false
-                                 && family.Name.Contains("Tag") == false)
+                .OfClass(typeof(Family))
+                .Cast<Family>()
+                .Where(family => IsFamilyAllowed(family, allowedFamilyCategoryIds))
                 .ToList();
 
             Families.AddRange(GetFamiliesElements(families));
+        }
+
+        private static bool IsFamilyAllowed(Family family, ElementId[] allowedFamilyCategoryIds)
+        {
+            if (family.Name.Contains("Standart")
+                || family.Name.Contains("Mullion")
+                || family.Name.Contains("Tag"))
+            {
+                return false;
+            }
+
+            return allowedFamilyCategoryIds.Contains(family.FamilyCategoryId);
         }
 
         private static IEnumerable<FamilyDto> GetFamiliesElements(IEnumerable<Family> families)
