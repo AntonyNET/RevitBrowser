@@ -41,9 +41,11 @@ namespace zRevitFamilyBrowser.Services
             });
 
             var families = new FilteredElementCollector(document)
-                .OfClass(typeof(Family))
+                .OfClass(typeof(FamilySymbol))
                 .WherePasses(mcFilter)
-                .Cast<Family>()
+                .Cast<FamilySymbol>()
+                .Select(x => x.Family)
+                .Distinct()
                 .Where(family => family.Name.Contains("Standart") == false
                                  && family.Name.Contains("Mullion") == false
                                  && family.Name.Contains("Tag") == false)
