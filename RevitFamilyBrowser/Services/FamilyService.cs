@@ -42,7 +42,7 @@ namespace zRevitFamilyBrowser.Services
 
             var families = new FilteredElementCollector(document)
                 .OfClass(typeof(Family))
-                //.WherePasses(mcFilter)
+                .WherePasses(mcFilter)
                 .Cast<Family>()
                 .Where(family => family.Name.Contains("Standart") == false
                                  && family.Name.Contains("Mullion") == false

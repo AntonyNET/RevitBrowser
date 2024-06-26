@@ -28,7 +28,7 @@
                     </Button>
                 </StackPanel>
 
-                <ListView ItemsSource="{Binding FavoriteSymbols}"  HorizontalContentAlignment="Stretch" Height="500">
+                <ListView ItemsSource="{Binding FavoriteSymbols}"  HorizontalContentAlignment="Stretch">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <windows:FamilySymbolControl/>
