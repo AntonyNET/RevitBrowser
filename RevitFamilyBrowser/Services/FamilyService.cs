@@ -23,7 +23,7 @@ namespace zRevitFamilyBrowser.Services
             DefaultFamilySymbolImageSize = new Size(50, 50);
             DefaultFamilySymbolImagePath = FileService.GetFullPath($"{nameof(Properties.Resources.RevitLogo)}.bmp");
 
-            Properties.Resources.RevitLogo.Save(DefaultFamilySymbolImagePath);
+            Properties.Resources.RevitLogo.Save(DefaultFamilySymbolImagePath); // зачем сохранять?
         }
 
         /// <summary>

@@ -19,10 +19,12 @@
         <TabItem Header="Избранное">
             <StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Button Background="Transparent" Padding="0 0 3 3">
+                    <!--Сохранить настройки-->
+                    <Button Command="{Binding SaveFavoritesCommand}" Background="Transparent" Padding="0 0 3 3">
                             <Path Fill="Gray" Data="M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z"/>
                     </Button>
 
+                    <!--Загрузить настройки-->
                     <Button Background="Transparent" Padding="0 0 3 3">
                             <Path Fill="Gray" Data="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z"/>
                     </Button>

@@ -35,8 +35,7 @@ namespace zRevitFamilyBrowser.ViewModels
             FamilySymbolDto.IsFavorite = false;
             OnPropertyChanged(nameof(FamilySymbolDto));
             OnPropertyChanged(nameof(CanAddToFavorite));
-
-            WeakReferenceMessenger.Default.Send(new FamilySymbolRemovedFromFavorite(this));
+            WeakReferenceMessenger.Default.Send(new FamilySymbolRemovedFromFavorite(this)); // что делает?
         }
 
         private void AddToFavorite()
@@ -44,7 +43,7 @@ namespace zRevitFamilyBrowser.ViewModels
             FamilySymbolDto.IsFavorite = true;
             OnPropertyChanged(nameof(FamilySymbolDto));
             OnPropertyChanged(nameof(CanAddToFavorite));
-            WeakReferenceMessenger.Default.Send(new FamilySymbolAddedToFavorite(this));
+            WeakReferenceMessenger.Default.Send(new FamilySymbolAddedToFavorite(this)); // что делает?
         }
 
         private void InstallSymbol()
