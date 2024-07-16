@@ -50,7 +50,21 @@ namespace zRevitFamilyBrowser.ViewModels
             // Добавлено свойство Family (название семейства)
             // Свойства ImagePath, FamilySymbol, IsFavorite игнорируются при сериализации
             string json = JsonConvert.SerializeObject(data);
-            File.WriteAllText(@"C:\Users\denis\OneDrive\Desktop\path.json", json);
+
+            // Запись в файл
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+            dlg.FileName = "MyFavoriteSet";
+            dlg.DefaultExt = ".json";
+            dlg.Filter = "All Files|*.*";
+
+            Nullable<bool> result = dlg.ShowDialog();
+
+            if (result == true)
+            {
+                File.WriteAllText(dlg.FileName, json);
+            }
+
+            //File.WriteAllText(@"C:\Users\denis\OneDrive\Desktop\path.json", json);
         }
 
         public void Receive(FamilySymbolAddedToFavorite message)
