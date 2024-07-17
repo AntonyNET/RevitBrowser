@@ -40,12 +40,37 @@ namespace zRevitFamilyBrowser.ViewModels
 
         private void LoadFavorites()
         {
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+            dlg.FileName = "MyFavoriteSet1";
+            dlg.DefaultExt = ".json";
+            dlg.Filter = "All Files|*.*";
 
+            Nullable<bool> result = dlg.ShowDialog();
+
+            if (result == true)
+            {
+                using (StreamReader file = File.OpenText(dlg.FileName))
+                {
+                    List<Dictionary<string, string>> fav
+                        = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(File.ReadAllText(dlg.FileName));
+
+                    FavoriteSymbols.Clear();
+
+                    foreach (var favoriteItem in fav)
+                    {
+                        FavoriteSymbols.Add(FamilyService.GetFavoriteFamilySymbolFromProject(favoriteItem));
+                    }
+
+                    // TODO:
+                    // Упростить определение поиска
+
+                };
+            }
         }
 
         private void SaveFavorites()
         {
-            List<FamilySymbolDto> data = FavoriteSymbols.Select(symb => symb.FamilySymbolDto).ToList();
+            var data = FavoriteSymbols.Select(symb => symb.FamilySymbolDto);
 
             // Добавлено свойство Family (название семейства)
             // Свойства ImagePath, FamilySymbol, IsFavorite игнорируются при сериализации
@@ -53,7 +78,7 @@ namespace zRevitFamilyBrowser.ViewModels
 
             // Запись в файл
             Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
-            dlg.FileName = "MyFavoriteSet";
+            dlg.FileName = "MyFavoriteSet1";
             dlg.DefaultExt = ".json";
             dlg.Filter = "All Files|*.*";
 
@@ -63,8 +88,6 @@ namespace zRevitFamilyBrowser.ViewModels
             {
                 File.WriteAllText(dlg.FileName, json);
             }
-
-            //File.WriteAllText(@"C:\Users\denis\OneDrive\Desktop\path.json", json);
         }
 
         public void Receive(FamilySymbolAddedToFavorite message)

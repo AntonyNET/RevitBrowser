@@ -23,7 +23,7 @@ namespace zRevitFamilyBrowser.Services
             DefaultFamilySymbolImageSize = new Size(50, 50);
             DefaultFamilySymbolImagePath = FileService.GetFullPath($"{nameof(Properties.Resources.RevitLogo)}.bmp");
 
-            Properties.Resources.RevitLogo.Save(DefaultFamilySymbolImagePath); // зачем сохранять?
+            Properties.Resources.RevitLogo.Save(DefaultFamilySymbolImagePath);
         }
 
         /// <summary>
@@ -112,6 +112,33 @@ namespace zRevitFamilyBrowser.Services
             image.Save(file, ImageFormat.Bmp);
 
             return imageFilePath;
+        }
+
+        public static FamilySymbolViewModel GetFavoriteFamilySymbolFromProject(Dictionary<string, string> favoriteItem)
+        {
+            // TODO: 
+            // Поиск в по названию семейства и названию символа
+
+            FamilySymbolViewModel fs = null;
+
+            foreach (FamilyDto family in Families)
+            {
+
+                if (family.Name == favoriteItem["Family"])
+                {
+                    foreach (var familySymbol in family.Symbols)
+                    {
+                        if (familySymbol.FamilySymbolDto.Name == favoriteItem["Name"])
+                        {
+                            fs = familySymbol;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return fs;
+
         }
     }
 }

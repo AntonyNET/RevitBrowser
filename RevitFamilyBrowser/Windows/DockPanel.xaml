@@ -25,7 +25,7 @@
                     </Button>
 
                     <!--Загрузить настройки-->
-                    <Button Background="Transparent" Padding="0 0 3 3">
+                    <Button Command="{Binding LoadFavoritesCommand}" Background="Transparent" Padding="0 0 3 3">
                             <Path Fill="Gray" Data="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z"/>
                     </Button>
                 </StackPanel>
